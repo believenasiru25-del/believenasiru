@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Skill Swap Platform — Believe Nasiru</title>
+<style>
+  :root{
+    --brand:#1e3a8a; --brand-light:#3b5bdb; --accent:#f59e0b;
+    --bg:#f4f6fb; --card:#fff; --text:#1f2937; --muted:#6b7280;
+    --radius:14px; --shadow:0 10px 30px rgba(30,58,138,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+  a{color:var(--brand-light);text-decoration:none;cursor:pointer}
+  header{background:linear-gradient(135deg,var(--brand),var(--brand-light));color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;box-shadow:var(--shadow)}
+  header .brand{font-weight:700;font-size:1.15rem}
+  header .brand span{color:var(--accent)}
+  nav a{color:#fff;margin-left:18px;font-size:.92rem;opacity:.92}
+  nav a:hover{opacity:1;text-decoration:underline}
+  main{flex:1;max-width:1000px;width:100%;margin:0 auto;padding:32px 20px}
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px}
+  h1{font-size:1.6rem;margin-bottom:6px}
+  h2{font-size:1.15rem;margin:20px 0 10px;color:var(--brand)}
+  .sub{color:var(--muted);margin-bottom:18px;font-size:.92rem}
+  label{display:block;font-size:.85rem;font-weight:600;margin:14px 0 6px}
+  input,select,textarea{width:100%;padding:11px 13px;border:1.5px solid #dbe1ee;border-radius:10px;font-size:.95rem;font-family:inherit;background:#fbfcff;transition:.2s}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--brand-light);box-shadow:0 0 0 3px rgba(59,91,219,.15)}
+  textarea{resize:vertical;min-height:70px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr}}
+  .btn{display:inline-block;background:linear-gradient(135deg,var(--brand),var(--brand-light));color:#fff;border:none;padding:13px 26px;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;transition:.2s;margin-top:18px;width:100%;text-align:center}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(30,58,138,.25)}
+  .btn.alt{background:#fff;color:var(--brand);border:2px solid var(--brand)}
+  .btn.sm{width:auto;padding:9px 18px;font-size:.85rem;margin-top:0}
+  .btn.wa{background:#25d366}
+  .btn.red{background:#dc2626}
+  .avatar-upload{display:flex;align-items:center;gap:18px;margin-top:8px}
+  .avatar-preview{width:96px;height:96px;border-radius:50%;background:#e8edf9;border:3px dashed #b9c6e8;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;font-size:.7rem;color:var(--muted);text-align:center}
+  .avatar-preview img{width:100%;height:100%;object-fit:cover}
+  .avatar-upload input[type=file]{display:none}
+  .pick{background:#eef2ff;color:var(--brand);padding:10px 16px;border-radius:9px;font-size:.85rem;font-weight:600;cursor:pointer;border:1.5px solid #cdd8f5}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;margin-top:20px}
+  .student{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;text-align:center}
+  .student img{width:76px;height:76px;border-radius:50%;object-fit:cover;margin:0 auto 10px;display:block;background:#e8edf9}
+  .student .name{font-weight:700}
+  .student .meta{color:var(--muted);font-size:.8rem;margin-bottom:10px}
+  .tag{display:inline-block;background:#eef2ff;color:var(--brand);font-size:.72rem;padding:3px 9px;border-radius:20px;margin:2px}
+  .tag.want{background:#fff7e6;color:#b45309}
+  footer{text-align:center;padding:18px;font-size:.8rem;color:var(--muted);border-top:1px solid #e5e9f2;margin-top:30px}
+  .hero{text-align:center;padding:60px 20px}
+  .hero h1{font-size:2.2rem;margin-bottom:14px}
+  .hero p{color:var(--muted);max-width:540px;margin:0 auto 26px;font-size:1.05rem}
+  .hero .btn{width:auto;display:inline-block}
+  .alert{padding:12px 16px;border-radius:10px;font-size:.88rem;margin-top:16px}
+  .alert.ok{background:#e7f8ee;color:#166534}
+  .alert.err{background:#fdeaea;color:#b91c1c}
+  .req{background:#fbfcff;border:1.5px solid #e2e8f5;border-radius:12px;padding:14px;margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .req .who{font-weight:600}
+  .req .meta{font-size:.8rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Skill<span>Swap</span> · Student Platform</div>
+  <nav id="nav"></nav>
+</header>
+
+<main id="app"></main>
+
+<footer>© 2026 Student Skill Swap Platform — Designed &amp; Developed by <strong>Believe Nasiru</strong></footer>
+
+<script>
+/* ============================================================
+   STUDENT SKILL SWAP PLATFORM — Believe Nasiru
+   Single-file App - Ready for GitHub Pages
+   ============================================================ */
+
+const DB = {
+  KEY: 'sss_students', SESSION: 'sss_current', REQ: 'sss_requests',
+
+  all(){ return JSON.parse(localStorage.getItem(this.KEY)||'[]'); },
+  save(l){ localStorage.setItem(this.KEY, JSON.stringify(l)); },
+  add(s){
+    const l = this.all();
+    if(l.some(x=>x.matric.toLowerCase()===s.matric.toLowerCase())) return 'matric';
+    if(l.some(x=>x.email.toLowerCase()===s.email.toLowerCase())) return 'email';
+    l.push(s); this.save(l); return true;
+  },
+  find(id){
+    const q = id.trim().toLowerCase();
+    return this.all().find(s=>s.email.toLowerCase()===q||s.matric.toLowerCase()===q);
+  },
+  login(id,pw){
+    const s = this.find(id);
+    if(s && s.password===pw){ localStorage.setItem(this.SESSION,s.matric); return s; }
+    return null;
+  },
+  current(){
+    const m = localStorage.getItem(this.SESSION);
+    if(!m) return null;
+    return this.all().find(s=>s.matric===m)||null;
+  },
+  logout(){ localStorage.removeItem(this.SESSION); },
+  update(s){ this.save(this.all().map(x=>x.matric===s.matric?s:x)); },
+
+  reqs(){ return JSON.parse(localStorage.getItem(this.REQ)||'[]'); },
+  saveReqs(r){ localStorage.setItem(this.REQ, JSON.stringify(r)); },
+  sendReq(from, to, skill){
+    const r = this.reqs();
+    if(r.some(x=>x.from===from && x.to===to && x.skill===skill && x.status==='pending')) return false;
+    r.push({id:Date.now(), from, to, skill, status:'pending', date:new Date().toISOString()});
+    this.saveReqs(r); return true;
+  },
+  incoming(matric){ return this.reqs().filter(r=>r.to===matric); },
+  outgoing(matric){ return this.reqs().filter(r=>r.from===matric); },
+  setReq(id,status){ this.saveReqs(this.reqs().map(r=>r.id===id?{...r,status}:r)); }
+};
+
+const app = document.getElementById('app');
+function go(page){ location.hash = '#'+page; }
+window.addEventListener('hashchange', route);
+
+function route(){
+  const user = DB.current();
+  const page = (location.hash.replace('#','')||'home');
+  renderNav(user);
+
+  const protectedPages = ['dashboard','browse','profile','edit','inbox'];
+  if(protectedPages.includes(page) && !user){ go('login'); return; }
+
+  switch(page){
+    case 'home': viewHome(); break;
+    case 'register': viewRegister(); break;
+    case 'login': viewLogin(); break;
+    case 'dashboard': viewDashboard(user); break;
+    case 'browse': viewBrowse(user); break;
+    case 'profile': viewProfile(user); break;
+    case 'edit': viewEdit(user); break;
+    case 'inbox': viewInbox(user); break;
+    default: viewHome();
+  }
+  window.scrollTo(0,0);
+}
+
+function renderNav(user){
+  document.getElementById('nav').innerHTML = user
+    ? `<a onclick="go('dashboard')">Dashboard</a>
+       <a onclick="go('browse')">Browse</a>
+       <a onclick="go('inbox')">Inbox (${DB.incoming(user.matric).filter(r=>r.status==='pending').length})</a>
+       <a onclick="doLogout()">Logout</a>`
+    : `<a onclick="go('login')">Login</a><a onclick="go('register')">Register</a>`;
+}
+function doLogout(){ DB.logout(); go('home'); }
+
+/* ---------- Views ---------- */
+function viewHome(){
+  app.innerHTML = `
+  <section class="hero">
+    <h1>Exchange Skills. Grow Together.</h1>
+    <p>A platform where students offer what they know and learn what they don't — one swap at a time.</p>
+    <button class="btn" onclick="go('register')">Get Started</button>
+  </section>`;
+}
+
+function viewRegister(){
+  app.innerHTML = `
+  <div class="card">
+    <h1>Create Your Student Account</h1>
+    <p class="sub">Fill in your details. Profile picture is optional.</p>
+    <form id="regForm">
+      <h2>Profile Picture</h2>
+      <div class="avatar-upload">
+        <div class="avatar-preview" id="preview">No photo</div>
+        <label class="pick" for="photo">📷 Choose Photo</label>
+        <input type="file" id="photo" accept="image/*">
+      </div>
+
+      <h2>Personal Information</h2>
+      <div class="grid2">
+        <div><label>Full Name</label><input id="name" required placeholder="e.g. Believe Nasiru"></div>
+        <div><label>Matric Number</label><input id="matric" required placeholder="e.g. 2025/HND/SWD/018"></div>
+        <div><label>Date of Birth</label><input id="dob" type="date" required></div>
+        <div><label>Gender</label><select id="gender" required>
+          <option value="">Select…</option><option>Male</option><option>Female</option><option>Prefer not to say</option>
+        </select></div>
+      </div>
+
+      <h2>School Information</h2>
+      <div class="grid2">
+        <div><label>Department</label><input id="dept" required placeholder="e.g. Software and web Development"></div>
+        <div><label>Faculty</label><input id="faculty" required placeholder="e.g. Faculty of Science"></div>
+        <div><label>Level</label><select id="level" required>
+          <option value="">Select…</option><option>100</option><option>200</option><option>300</option><option>400</option><option>500</option>
+        </select></div>
+        <div><label>Phone Number</label><input id="phone" required placeholder="e.g. 09046506224"></div>
+      </div>
+
+      <h2>Account</h2>
+      <div class="grid2">
+        <div><label>Email</label><input id="email" type="email" required placeholder="believe@gmail.com"></div>
+        <div><label>Password</label><input id="password" type="password" required minlength="6" placeholder="min. 6 characters"></div>
+      </div>
+
+      <h2>Skill Swap</h2>
+      <label>Skills I Offer</label>
+      <input id="offers" placeholder="e.g. Web Design, Python, Graphics">
+      <label>Skills I Want to Learn </label>
+      <input id="wants" placeholder="e.g. Public Speaking, Data Analysis">
+      <label>Short Bio</label>
+      <textarea id="bio" placeholder="Tell other students about yourself…"></textarea>
+
+      <div id="msg"></div>
+      <button class="btn" type="submit">Create Account</button>
+      <p class="sub" style="margin-top:16px;text-align:center">Already registered? <a onclick="go('login')">Login</a></p>
+    </form>
+  </div>`;
+
+  let photoData = '';
+  document.getElementById('photo').addEventListener('change', e=>{
+    const f = e.target.files[0]; if(!f) return;
+    if(f.size > 800000){ alert('Choose an image under 800 KB.'); e.target.value=''; return; }
+    const r = new FileReader();
+    r.onload = ()=>{ photoData = r.result; document.getElementById('preview').innerHTML = `<img src="${photoData}">`; };
+    r.readAsDataURL(f);
+  });
+
+  document.getElementById('regForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    const v = id => document.getElementById(id).value.trim();
+    const sp = s => s ? s.split(',').map(x=>x.trim()).filter(Boolean) : [];
+    const student = {
+      name:v('name'), matric:v('matric'), dob:v('dob'), gender:v('gender'),
+      dept:v('dept'), faculty:v('faculty'), level:v('level'), phone:v('phone'),
+      email:v('email'), password:v('password'),
+      offers:sp(v('offers')), wants:sp(v('wants')), bio:v('bio'),
+      photo:photoData, joined:new Date().toISOString()
+    };
+    const res = DB.add(student);
+    const msg = document.getElementById('msg');
+    if(res === true){
+      msg.innerHTML = `<div class="alert ok">✅ Registration successful! <a onclick="go('login')">Login now →</a></div>`;
+      e.target.reset(); photoData=''; document.getElementById('preview').innerHTML='No photo';
+    } else {
+      msg.innerHTML = `<div class="alert err">⚠️ A student with that ${res} already exists.</div>`;
+    }
+  });
+}
+
+function viewLogin(){
+  app.innerHTML = `
+  <div class="card" style="max-width:460px;margin:0 auto">
+    <h1>Welcome Back</h1>
+    <p class="sub">Login with your email or matric number.</p>
+    <form id="loginForm">
+      <label>Email or Matric Number</label>
+      <input id="ident" required placeholder="believe@gmail.com or 2025/HND/SWD/018">
+      <label>Password</label>
+      <input id="password" type="password" required>
+      <div id="msg"></div>
+      <button class="btn" type="submit">Login</button>
+      <p class="sub" style="margin-top:16px;text-align:center">No account? <a onclick="go('register')">Register</a></p>
+    </form>
+  </div>`;
+  document.getElementById('loginForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    const u = DB.login(document.getElementById('ident').value, document.getElementById('password').value);
+    if(u){ go('dashboard'); }
+    else { document.getElementById('msg').innerHTML = `<div class="alert err">⚠️ Invalid credentials.</div>`; }
+  });
+}
+
+function avatarHtml(u, size=96){
+  return u.photo
+    ? `<img src="${u.photo}" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover">`
+    : `<div class="avatar-preview" style="width:${size}px;height:${size}px">${u.name[0]}</div>`;
+}
+
+function viewDashboard(u){
+  const offers = u.offers.map(s=>`<span class="tag">${s}</span>`).join('') || '<em>None yet</em>';
+  const wants  = u.wants.map(s=>`<span class="tag want">${s}</span>`).join('') || '<em>None yet</em>';
+  const pending = DB.incoming(u.matric).filter(r=>r.status==='pending').length;
+  app.innerHTML = `
+  <div class="card">
+    <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">
+      ${avatarHtml(u)}
+      <div>
+        <h1>Welcome, ${u.name.split(' ')[0]} 👋</h1>
+        <p class="sub">${u.dept} · ${u.faculty} · Level ${u.level} · Matric: ${u.matric}</p>
+      </div>
+    </div>
+    <h2>Skills I Offer</h2><div>${offers}</div>
+    <h2>Skills I Want to Learn</h2><div>${wants}</div>
+    ${u.bio?`<h2>About Me</h2><p>${u.bio}</p>`:''}
+    <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+      <button class="btn sm" onclick="go('browse')">Browse Students</button>
+      <button class="btn sm alt" onclick="go('profile')">View My Profile</button>
+      <button class="btn sm alt" onclick="go('edit')">Edit Profile</button>
+      <button class="btn sm" onclick="go('inbox')">Inbox ${pending?`(${pending} new)`:''}</button>
+    </div>
+  </div>`;
+}
+
+function whatsappLink(s, me){
+  const num = '2349035913021'; // <--- YOUR NUMBER IS NOW HERE
+  const text = encodeURIComponent(
+    `Hi ${s.name.split(' ')[0]}, I found you on SkillSwap (Student Skill Swap Platform by Believe Nasiru). `+
+    `I'd love to swap skills. I can offer: ${me.offers.length?me.offers.join(', '):'…'}`
+  );
+  return `https://wa.me/${num}?text=${text}`;
+}
+
+function viewBrowse(me){
+  app.innerHTML = `
+  <div class="card">
+    <h1>Browse Students</h1>
+    <p class="sub">Search by name, department, or skill.</p>
+    <input id="search" placeholder="🔍 e.g. Python, Computer Science, Believe…">
+    <div class="cards" id="cards"></div>
+  </div>`;
+  const draw = (q='')=>{
+    q = q.toLowerCase();
+    const list = DB.all().filter(s=>{
+      if(s.matric===me.matric) return false;
+      return [s.name,s.dept,s.faculty,...s.offers,...s.wants].join(' ').toLowerCase().includes(q);
+    });
+    document.getElementById('cards').innerHTML = list.length ? list.map(s=>`
+      <div class="student">
+        ${s.photo?`<img src="${s.photo}">`:`<div class="avatar-preview" style="margin:0 auto 10px">${s.name[0]}</div>`}
+        <div class="name">${s.name}</div>
+        <div class="meta">${s.dept} · L${s.level}</div>
+        <div>${s.offers.map(x=>`<span class="tag">${x}</span>`).join('')}</div>
+        <div>${s.wants.map(x=>`<span class="tag want">${x}</span>`).join('')}</div>
+        <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
+          <button class="btn sm" onclick="askSwap('${s.matric}')">🤝 Request Swap</button>
+          <a class="btn sm wa" href="${whatsappLink(s,me)}" target="_blank" rel="noopener">💬 WhatsApp</a>
+        </div>
+      </div>`).join('') : `<p class="sub">No students found. <a onclick="go('register')">Invite a friend to register</a>.</p>`;
+  };
+  document.getElementById('search').addEventListener('input', e=>draw(e.target.value));
+  draw();
+}
+
+function askSwap(toMatric){
+  const me = DB.current();
+  const to = DB.all().find(s=>s.matric===toMatric);
+  const skill = prompt(`Which of ${to.name.split(' ')[0]}'s skills do you want to learn?\n${to.offers.join(', ')||'(none listed)'}`, to.offers[0]||'');
+  if(!skill) return;
+  const ok = DB.sendReq(me.matric, to.matric, skill);
+  alert(ok ? `✅ Swap request sent to ${to.name}.` : '⚠️ You already sent this request (pending).');
+  renderNav(me);
+}
+
+function viewProfile(u){
+  app.innerHTML = `
+  <div class="card">
+    <h1>My Profile</h1>
+    <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin:18px 0">
+      ${avatarHtml(u,110)}
+      <div>
+        <h2 style="margin:0">${u.name}</h2>
+        <p class="sub">${u.matric} · ${u.dept} · ${u.faculty} · Level ${u.level}</p>
+        <p class="sub">DOB: ${u.dob} · Gender: ${u.gender} · Phone: ${u.phone}</p>
+        <p class="sub">Email: ${u.email}</p>
+      </div>
+    </div>
+    <h2>Skills I Offer</h2><div>${u.offers.map(s=>`<span class="tag">${s}</span>`).join('')||'—'}</div>
+    <h2>Skills I Want to Learn</h2><div>${u.wants.map(s=>`<span class="tag want">${s}</span>`).join('')||'—'}</div>
+    <h2>Bio</h2><p>${u.bio||'—'}</p>
+    <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+      <button class="btn sm" onclick="go('dashboard')">← Dashboard</button>
+      <button class="btn sm alt" onclick="go('edit')">Edit Profile</button>
+    </div>
+  </div>`;
+}
+
+function viewEdit(u){
+  app.innerHTML = `
+  <div class="card">
+    <h1>Edit Profile</h1>
+    <form id="editForm">
+      <div class="avatar-upload">
+        <div class="avatar-preview" id="preview">${u.photo?`<img src="${u.photo}">`:'No photo'}</div>
+        <label class="pick" for="photo">📷 Change Photo</label>
+        <input type="file" id="photo" accept="image/*">
+      </div>
+      <div class="grid2">
+        <div><label>Full Name</label><input id="name" value="${u.name}" required></div>
+        <div><label>Phone</label><input id="phone" value="${u.phone}" required></div>
+        <div><label>Department</label><input id="dept" value="${u.dept}" required></div>
+        <div><label>Faculty</label><input id="faculty" value="${u.faculty}" required></div>
+        <div><label>Level</label><select id="level">
+          ${['100','200','300','400','500'].map(l=>`<option ${l===u.level?'selected':''}>${l}</option>`).join('')}
+        </select></div>
+        <div><label>Gender</label><select id="gender">
+          ${['Male','Female','Prefer not to say'].map(g=>`<option ${g===u.gender?'selected':''}>${g}</option>`).join('')}
+        </select></div>
+      </div>
+      <label>Skills I Offer</label><input id="offers" value="${u.offers.join(', ')}">
+      <label>Skills I Want to Learn</label><input id="wants" value="${u.wants.join(', ')}">
+      <label>Bio</label><textarea id="bio">${u.bio}</textarea>
+      <button class="btn" type="submit">Save Changes</button>
+    </form>
+  </div>`;
+
+  let photo = u.photo;
+  document.getElementById('photo').addEventListener('change', e=>{
+    const f = e.target.files[0]; if(!f) return;
+    if(f.size>800000){ alert('Image must be under 800 KB.'); e.target.value=''; return; }
+    const r = new FileReader();
+    r.onload = ()=>{ photo = r.result; document.getElementById('preview').innerHTML = `<img src="${photo}">`; };
+    r.readAsDataURL(f);
+  });
+
+  document.getElementById('editForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    const v = id => document.getElementById(id).value.trim();
+    const sp = s => s ? s.split(',').map(x=>x.trim()).filter(Boolean) : [];
+    DB.update({
+      ...u,
+      name:v('name'), phone:v('phone'), dept:v('dept'), faculty:v('faculty'),
+      level:document.getElementById('level').value, gender:document.getElementById('gender').value,
+      offers:sp(v('offers')), wants:sp(v('wants')), bio:v('bio'), photo
+    });
+    alert('✅ Profile updated.');
+    go('profile');
+  });
+}
+
+function viewInbox(me){
+  const inc = DB.incoming(me.matric);
+  const out = DB.outgoing(me.matric);
+  const nameOf = m => (DB.all().find(s=>s.matric===m)||{name:'Unknown'}).name;
+
+  const incHtml = inc.length ? inc.map(r=>`
+    <div class="req">
+      <div>
+        <div class="who">From: ${nameOf(r.from)}</div>
+        <div class="meta">Wants to learn: <strong>${r.skill}</strong> · Status: <strong>${r.status}</strong></div>
+      </div>
+      ${r.status==='pending'?`
+        <div style="display:flex;gap:8px">
+          <button class="btn sm" onclick="respond(${r.id},'accepted')">Accept</button>
+          <button class="btn sm red" onclick="respond(${r.id},'declined')">Decline</button>
+        </div>`:''}
+    </div>`).join('') : '<p class="sub">No incoming requests yet.</p>';
+
+  const outHtml = out.length ? out.map(r=>`
+    <div class="req">
+      <div>
+        <div class="who">To: ${nameOf(r.to)}</div>
+        <div class="meta">Skill: <strong>${r.skill}</strong> · Status: <strong>${r.status}</strong></div>
+      </div>
+    </div>`).join('') : '<p class="sub">You haven\'t sent any requests yet. <a onclick="go(\'browse\')">Browse students →</a></p>';
+
+  app.innerHTML = `
+  <div class="card">
+    <h1>Swap Inbox</h1>
+    <h2>Incoming Requests</h2>${incHtml}
+    <h2>Sent Requests</h2>${outHtml}
+    <div style="margin-top:24px"><button class="btn sm alt" onclick="go('dashboard')">← Dashboard</button></div>
+  </div>`;
+}
+
+function respond(id,status){
+  DB.setReq(id,status);
+  renderNav(DB.current());
+  route();
+}
+
+/* Boot the app */
+route();
+</script>
+</body>
+</html>
